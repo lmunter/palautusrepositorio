@@ -1,14 +1,13 @@
 import requests
 from player import Player
 
-def main():
-    url = "https://studies.cs.helsinki.fi/nhlstats/2021-22/players"
-    response = requests.get(url).json()
+class PlayerReader:
+    def __init__(self, url):
+        response = requests.get(url).json()
 
-    players = []
+        self.players = []
 
-    for player_dict in response:
-        if player_dict['nationality'] == 'FIN':
+        for player_dict in response:
             player = Player(
                 player_dict['name'],
                 player_dict['nationality'],
@@ -19,10 +18,28 @@ def main():
                 player_dict['games'],
             )
 
-            players.append(player)
-            players.sort(key=lambda h: (h.pisteet), reverse=True)
+            self.players.append(player)
 
-    print("Oliot:")
+    def __str__(self):
+        return self.players
+
+class PlayerStats:
+    def __init__(self, reader):
+        self.list = reader
+        self.list.sort(key=lambda h: (h.pisteet), reverse=True)
+    
+    def top_scorers_by_nationality(self, nation):
+        self.new_list = []
+        for player in self.list:
+            if player['nationality'] == nation:
+                self.new_list.append(player)
+        return self.new_list
+
+def main():
+    url = "https://studies.cs.helsinki.fi/nhlstats/2021-22/players"
+    reader = PlayerReader(url)
+    stats = PlayerStats(reader)
+    players = stats.top_scorers_by_nationality("FIN")
 
     for player in players:
         print(player)
