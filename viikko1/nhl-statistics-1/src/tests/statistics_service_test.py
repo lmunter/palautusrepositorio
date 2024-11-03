@@ -1,5 +1,5 @@
 import unittest
-from statistics_service import StatisticsService
+from statistics_service import StatisticsService, SortBy
 from player import Player
 
 class PlayerReaderStub:
@@ -19,12 +19,21 @@ class TestStatisticsService(unittest.TestCase):
             PlayerReaderStub()
         )
 
-    def test_top_palauttaa_oikean_maaran(self):
-        result = self.stats.top(2)
-        self.assertEqual(len(result), 3)
+    def test_top_goals_palauttaa_oikean_tuloksen(self):
+        result = self.stats.top(4, SortBy.GOALS)
+        useful_result = []
+        for i in result:
+            useful_result.append(str(i))
+        self.assertEqual(useful_result, [
+            "Lemieux PIT 45 + 54 = 99",
+            "Yzerman DET 42 + 56 = 98",
+            "Kurri EDM 37 + 53 = 90",
+            "Gretzky EDM 35 + 89 = 124",
+            "Semenko EDM 4 + 12 = 16"
+        ])
 
-    def test_top_palauttaa_oikean_tuloksen(self):
-        result = self.stats.top(4)
+    def test_top_points_palauttaa_oikean_tuloksen(self):
+        result = self.stats.top(4, SortBy.POINTS)
         useful_result = []
         for i in result:
             useful_result.append(str(i))
@@ -32,6 +41,19 @@ class TestStatisticsService(unittest.TestCase):
             "Gretzky EDM 35 + 89 = 124",
             "Lemieux PIT 45 + 54 = 99",
             "Yzerman DET 42 + 56 = 98",
+            "Kurri EDM 37 + 53 = 90",
+            "Semenko EDM 4 + 12 = 16"
+        ])
+
+    def test_top_assists_palauttaa_oikean_tuloksen(self):
+        result = self.stats.top(4, SortBy.ASSISTS)
+        useful_result = []
+        for i in result:
+            useful_result.append(str(i))
+        self.assertEqual(useful_result, [
+            "Gretzky EDM 35 + 89 = 124",
+            "Yzerman DET 42 + 56 = 98",
+            "Lemieux PIT 45 + 54 = 99",
             "Kurri EDM 37 + 53 = 90",
             "Semenko EDM 4 + 12 = 16"
         ])
