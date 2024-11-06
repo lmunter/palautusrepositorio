@@ -23,6 +23,8 @@ class ProjectReader:
         listed_dev_dependencies = []
         for key in dev_dependencies:
             listed_dev_dependencies.append(key)
+        license = poetry["license"]
+        authors = poetry["authors"]
 
         # deserialisoi TOML-formaatissa oleva merkkijono ja muodosta Project-olio sen tietojen perusteella
-        return Project(name, description, listed_dependencies, listed_dev_dependencies)
+        return Project(name, description, listed_dependencies, listed_dev_dependencies, license, authors)
