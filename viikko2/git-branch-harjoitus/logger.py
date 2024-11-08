@@ -1,8 +1,4 @@
-from logger import logger
+from datetime import datetime
 
-logger("aloitetaan")
-
-x = int(input("luku 1: "))
-y = int(input("luku 2: "))
-
-logger("lopetetaan")
+def logger(viesti):
+	print(f"{datetime.now()}: {viesti}")
