@@ -48,6 +48,33 @@ Register With Username That Is Already In Use
     Click Button  Register
     Register Should Fail With Message  User with username kalle already exists
 
+Login After Successful Registration
+    Set Username  kale
+    Set Password  kalle123
+    Set Password Confirmation  kalle123
+    Click Button  Register
+    Register Should Succeed
+    Click Link  Continue to main page
+    Title Should Be  Ohtu Application main page
+    Click Button  Logout
+    Go To Login Page
+    Set Username  kale
+    Set Password  kalle123
+    Submit Credentials
+    Login Should Succeed
+
+Login After Failed Registration
+    Set Username  ka
+    Set Password  kalle123
+    Set Password Confirmation  kalle123
+    Click Button  Register
+    Register Should Fail With Message  Username is too short
+    Go To Login Page
+    Set Username  ka
+    Set Password  kalle123
+    Submit Credentials
+    Login Should Fail With Message  Invalid username or password
+
 *** Keywords ***
 Go To Register Page
     Go To  ${REGISTER_URL}
@@ -82,3 +109,14 @@ Reset Application Create User And Go To Register Page
     Reset Application
     Create User  kalle  kalle123
     Go To Register Page
+
+Login Should Succeed
+    Main Page Should Be Open
+
+Login Should Fail With Message
+    [Arguments]  ${message}
+    Login Page Should Be Open
+    Page Should Contain  ${message}
+
+Submit Credentials
+    Click Button  Login
